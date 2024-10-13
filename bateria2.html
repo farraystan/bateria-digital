@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        table {
+            border-collapse: collapse;
+            margin: 20px auto;
+        }
+        td {
+            width: 40px;
+            height: 40px;
+            text-align: center;
+            border: 1px solid #000;
+            cursor: pointer;
+        }
+        td.label {
+            width: 80px;
+            text-align: left;
+            font-weight: bold;
+            cursor: default;
+        }
+        .hit {
+            background-color: rgb(122, 121, 121);
+        }
+        .surdo {
+            background-color: #ffcccb;
+            font-weight: bold;
+        }
+        .config {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+        }
+    </style>
+    <title>Viradas de Bateria</title>
+</head>
+<body>
+    <h1 style="text-align: center;">Matriz de Viradas de Bateria</h1>
+
+    <table id="bateriaTable">
+        <!-- Matriz será gerada dinamicamente -->
+    </table>
+
+    <div class="config">
+        <label for="ritmo">Escolha o ritmo: </label>
+        <select id="ritmo">
+            <option value="4">4 colunas</option>
+            <option value="8">8 colunas</option>
+            <option value="16">16 colunas</option>
+            <option value="32">32 colunas</option>
+        </select>
+    </div>
+
+    <script>
+        const bateriaComponentes = [
+            "Chimbal",
+            "Caixa",
+            "Bumbo",
+            "Prato de Ataque",
+            "Tambor 1",
+            "Tambor 2",
+            "Prato de Condução",
+            "Surdo"
+        ];
+
+        function criarTabela(quantidadeColunas) {
+            const tabela = document.getElementById("bateriaTable");
+            tabela.innerHTML = ""; // Limpa a tabela
+
+            // Gera as linhas e colunas da matriz
+            bateriaComponentes.forEach((componente, index) => {
+                const linha = document.createElement("tr");
+
+                // Primeira célula: o nome do componente (Chimbal, Caixa, etc.)
+                const labelCell = document.createElement("td");
+                labelCell.classList.add("label");
+                if (componente.includes("Surdo")) {
+                    labelCell.classList.add("surdo");
+                }
+                labelCell.innerText = componente;
+                linha.appendChild(labelCell);
+
+                // Adiciona as células de batida de acordo com o número de colunas (4, 8 ou 16)
+                for (let i = 0; i < quantidadeColunas; i++) {
+                    const cell = document.createElement("td");
+                    cell.addEventListener('click', function() {
+                        this.classList.toggle('hit'); // Adiciona ou remove a classe 'hit' ao clicar
+                    });
+                    linha.appendChild(cell);
+                }
+                tabela.appendChild(linha);
+            });
+        }
+
+        // Atualiza a matriz de acordo com a escolha do ritmo
+        document.getElementById("ritmo").addEventListener("change", function() {
+            const colunas = parseInt(this.value);
+            criarTabela(colunas);
+        });
+
+        // Cria a tabela com o ritmo inicial (4 colunas)
+        criarTabela(4);
+    </script>
+</body>
+</html>

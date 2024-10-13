@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        table {
+            border-collapse: collapse;
+            margin: 20px auto;
+        }
+        td {
+            width: 40px;
+            height: 40px;
+            text-align: center;
+            border: 1px solid #000;
+            cursor: pointer;
+        }
+        td.label {
+            width: 80px;
+            text-align: left;
+            font-weight: bold;
+            cursor: default;
+        }
+        .hit {
+            background-color: rgb(118, 117, 120);
+        }
+    </style>
+    <title>Viradas de Bateria</title>
+</head>
+<body>
+    <h1 style="text-align: center;">Matriz de Viradas de Bateria</h1>
+
+    <table>
+        <tr>
+            <td class="label">Chimbal</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td class="label">Caixa</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td class="label">Bumbo</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td class="label">Prato de Ataque</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td class="label">Tambor 1</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td class="label">Tambor 2</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td class="label">Prato de Condução</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td class="label">Prato de Condução</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr></tr>
+            <td class="label">Surdo</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+    </table>
+
+    <script>
+        // Adiciona evento de clique para alternar marcação de batida (hit)
+        document.querySelectorAll('td:not(.label)').forEach(function(cell) {
+            cell.addEventListener('click', function() {
+                this.classList.toggle('hit'); // Adiciona ou remove a classe 'hit'
+            });
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        table {
+            border-collapse: collapse;
+            margin: 20px auto;
+        }
+        td {
+            width: 40px;
+            height: 40px;
+            text-align: center;
+            border: 1px solid #000;
+            cursor: pointer;
+        }
+        td.label {
+            width: 80px;
+            text-align: left;
+            font-weight: bold;
+            cursor: default;
+        }
+        .hit {
+            background-color: rgb(78, 76, 76);
+        }
+        .surdo {
+            background-color: #ffcccb;
+            font-weight: bold;
+        }
+        .config {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+        }
+    </style>
+    <title>Viradas de Bateria</title>
+</head>
+<body>
+    <h1 style="text-align: center;">Matriz de Viradas de Bateria</h1>
+
+    <table id="bateriaTable">
+        <!-- Matriz será gerada dinamicamente -->
+    </table>
+
+    <div style="text-align: center;">
+        <button id="playButton">Play</button>
+    </div>
+
+    <div class="config">
+        <label for="ritmo">Escolha o ritmo: </label>
+        <select id="ritmo">
+            <option value="4">4 colunas</option>
+            <option value="8">8 colunas</option>
+            <option value="16">16 colunas</option>
+            <option value="32">32 colunas</option>
+        </select>
+    </div>
+
+    <!-- Sons de bateria -->
+    <audio id="chimbalSound" src="Vídeo sem título ‐ Feito com o Clipchamp (video-converter.com).wav"></audio>
+    <audio id="caixaSound" src="Vídeo sem título ‐ Feito com o Clipchamp (1) (video-converter.com).wav"></audio>
+    <audio id="bumboSound" src="Vídeo sem título ‐ Feito com o Clipchamp (online-video-cutter.com) (1).mp3"></audio>
+    <audio id="pratoAtaqueSound" src="pratoataque.mp3"></audio>
+    <audio id="tambor1Sound" src="sounds/tambor1.mp3"></audio>
+    <audio id="tambor2Sound" src="sounds/tambor2.mp3"></audio>
+    <audio id="pratoConducaoSound" src="sounds/prato_conducao.mp3"></audio>
+    <audio id="surdoSound" src="sounds/surdo.mp3"></audio>
+
+    <script>
+        const bateriaComponentes = [
+            { nome: "Chimbal", som: document.getElementById('chimbalSound') },
+            { nome: "Caixa", som: document.getElementById('caixaSound') },
+            { nome: "Bumbo", som: document.getElementById('bumboSound') },
+            { nome: "Prato de Ataque", som: document.getElementById('pratoAtaqueSound') },
+            { nome: "Tambor 1", som: document.getElementById('tambor1Sound') },
+            { nome: "Tambor 2", som: document.getElementById('tambor2Sound') },
+            { nome: "Prato de Condução", som: document.getElementById('pratoConducaoSound') },
+            { nome: "Surdo", som: document.getElementById('surdoSound') }
+        ];
+
+        let ritmoSelecionado = 4; // Ritmo padrão (4 colunas)
+
+        function criarTabela(quantidadeColunas) {
+            const tabela = document.getElementById("bateriaTable");
+            tabela.innerHTML = ""; // Limpa a tabela
+
+            // Gera as linhas e colunas da matriz
+            bateriaComponentes.forEach((componente, index) => {
+                const linha = document.createElement("tr");
+
+                // Primeira célula: o nome do componente (Chimbal, Caixa, etc.)
+                const labelCell = document.createElement("td");
+                labelCell.classList.add("label");
+                if (componente.nome.includes("Surdo")) {
+                    labelCell.classList.add("surdo");
+                }
+                labelCell.innerText = componente.nome;
+                linha.appendChild(labelCell);
+
+                // Adiciona as células de batida de acordo com o número de colunas (4, 8 ou 16)
+                for (let i = 0; i < quantidadeColunas; i++) {
+                    const cell = document.createElement("td");
+                    cell.addEventListener('click', function() {
+                        this.classList.toggle('hit'); // Adiciona ou remove a classe 'hit' ao clicar
+                    });
+                    linha.appendChild(cell);
+                }
+                tabela.appendChild(linha);
+            });
+        }
+
+        // Função para tocar os sons com base na matriz de batidas selecionadas
+        function tocarSons() {
+            const linhas = document.querySelectorAll("#bateriaTable tr");
+            let colIndex = 0;
+
+            function tocarColuna() {
+                linhas.forEach((linha, index) => {
+                    const celulas = linha.querySelectorAll("td:not(.label)");
+                    if (celulas[colIndex].classList.contains("hit")) {
+                        bateriaComponentes[index].som.currentTime = 0; // Reseta o áudio
+                        bateriaComponentes[index].som.play(); // Toca o som
+                    }
+                });
+
+                colIndex++;
+                if (colIndex < ritmoSelecionado) {
+                    setTimeout(tocarColuna, 500); // Avança para a próxima coluna a cada 500ms (ajuste o tempo como preferir)
+                }
+            }
+
+            tocarColuna(); // Inicia a execução da sequência
+        }
+
+        // Atualiza a matriz de acordo com a escolha do ritmo
+        document.getElementById("ritmo").addEventListener("change", function() {
+            ritmoSelecionado = parseInt(this.value);
+            criarTabela(ritmoSelecionado);
+        });
+
+        // Botão Play para tocar os sons na sequência
+        document.getElementById("playButton").addEventListener("click", function() {
+            tocarSons();
+        });
+
+        // Cria a tabela com o ritmo inicial (4 colunas)
+        criarTabela(4);
+    </script>
+
+</body>
+</html>
